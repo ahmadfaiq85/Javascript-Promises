@@ -3,16 +3,16 @@ const output = document.getElementById("output");
 
 output.innerText = "Loading...";
 
-const responsePromise = fetch(API_URL + "films");
-//console.log(responsePromise);
-responsePromise.then(response => {
-    return response.json();
-    //console.log(response);
-}).then(films => {
-    const filmTitles = films
+fetch(API_URL + "films")
+    .then(response => response.json())
+    .then(films => {
+        const filmTitles = getFilmTitles(films);
+        output.innerText = filmTitles;
+});
+
+function getFilmTitles(films) {
+    return films
         .sort((a, b) => a.episode_id - b.episode_id)
         .map(film => `${film.episode_id}. ${film.title}`)
         .join("\n");
-
-        output.innerText = filmTitles;
-});
+}
